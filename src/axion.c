@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BASE_URL "http://localhost:3001"
+#define BASE_URL "https://api.axionquant.com"
 
 // Opaque struct defined in the header
 struct AxionClient {
