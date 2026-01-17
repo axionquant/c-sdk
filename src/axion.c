@@ -141,22 +141,22 @@ static AxionResponse* _axion_request(AxionClient *client, const char *path, cons
 // Helper function to build query string
 static char* _build_query(const char **keys, const char **values, int count) {
     if (count == 0) return NULL;
-    
+
     char *query = malloc(1024);
     if (!query) return NULL;
-    
+
     int offset = 0;
     for (int i = 0; i < count; i++) {
         if (values[i] != NULL) {
             offset += snprintf(query + offset, 1024 - offset, "%s=%s&", keys[i], values[i]);
         }
     }
-    
+
     // Remove trailing '&' if it exists
     if (offset > 0) {
         query[offset - 1] = '\0';
     }
-    
+
     return query;
 }
 
@@ -209,66 +209,66 @@ void axion_free_response(AxionResponse *response) {
 }
 
 // Credit API
-AxionResponse* axion_search_credit(AxionClient *client, const char *query) {
+AxionResponse* axion_credit_search(AxionClient *client, const char *query) {
     char path[] = "credit/search";
     char full_query[512];
     snprintf(full_query, sizeof(full_query), "query=%s", query);
     return _axion_request(client, path, full_query);
 }
 
-AxionResponse* axion_get_credit_ratings(AxionClient *client, const char *entity_id) {
+AxionResponse* axion_credit_ratings(AxionClient *client, const char *entity_id) {
     char path[256];
     snprintf(path, sizeof(path), "credit/ratings/%s", entity_id);
     return _axion_request(client, path, NULL);
 }
 
 // ESG API
-AxionResponse* axion_get_esg_data(AxionClient *client, const char *ticker) {
+AxionResponse* axion_esg_data(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "esg/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
 // ETF API
-AxionResponse* axion_get_etf_fund_data(AxionClient *client, const char *ticker) {
+AxionResponse* axion_etfs_fund(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "etfs/%s/fund", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_etf_holdings(AxionClient *client, const char *ticker) {
+AxionResponse* axion_etfs_holdings(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "etfs/%s/holdings", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_etf_exposure(AxionClient *client, const char *ticker) {
+AxionResponse* axion_etfs_exposure(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "etfs/%s/exposure", ticker);
     return _axion_request(client, path, NULL);
 }
 
 // Supply Chain API
-AxionResponse* axion_get_supply_chain_customers(AxionClient *client, const char *ticker) {
+AxionResponse* axion_supply_chain_customers(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "supply-chain/%s/customers", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_supply_chain_peers(AxionClient *client, const char *ticker) {
+AxionResponse* axion_supply_chain_peers(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "supply-chain/%s/peers", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_supply_chain_suppliers(AxionClient *client, const char *ticker) {
+AxionResponse* axion_supply_chain_suppliers(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "supply-chain/%s/suppliers", ticker);
     return _axion_request(client, path, NULL);
 }
 
 // Stocks API
-AxionResponse* axion_get_stock_tickers(AxionClient *client, const char *country, const char *exchange) {
+AxionResponse* axion_stocks_tickers(AxionClient *client, const char *country, const char *exchange) {
     const char *keys[] = {"country", "exchange"};
     const char *values[] = {country, exchange};
     char *query = _build_query(keys, values, 2);
@@ -277,13 +277,13 @@ AxionResponse* axion_get_stock_tickers(AxionClient *client, const char *country,
     return response;
 }
 
-AxionResponse* axion_get_stock_ticker_by_symbol(AxionClient *client, const char *ticker) {
+AxionResponse* axion_stocks_quote(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "stocks/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_stock_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+AxionResponse* axion_stocks_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
     const char *keys[] = {"from", "to", "frame"};
     const char *values[] = {from_date, to_date, frame};
     char *query = _build_query(keys, values, 3);
@@ -295,7 +295,7 @@ AxionResponse* axion_get_stock_prices(AxionClient *client, const char *ticker, c
 }
 
 // Crypto API
-AxionResponse* axion_get_crypto_tickers(AxionClient *client, const char *type) {
+AxionResponse* axion_crypto_tickers(AxionClient *client, const char *type) {
     const char *keys[] = {"type"};
     const char *values[] = {type};
     char *query = _build_query(keys, values, 1);
@@ -304,13 +304,13 @@ AxionResponse* axion_get_crypto_tickers(AxionClient *client, const char *type) {
     return response;
 }
 
-AxionResponse* axion_get_crypto_ticker_by_symbol(AxionClient *client, const char *ticker) {
+AxionResponse* axion_crypto_quote(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "crypto/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_crypto_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+AxionResponse* axion_crypto_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
     const char *keys[] = {"from", "to", "frame"};
     const char *values[] = {from_date, to_date, frame};
     char *query = _build_query(keys, values, 3);
@@ -322,7 +322,7 @@ AxionResponse* axion_get_crypto_prices(AxionClient *client, const char *ticker, 
 }
 
 // Forex API
-AxionResponse* axion_get_forex_tickers(AxionClient *client, const char *country, const char *exchange) {
+AxionResponse* axion_forex_tickers(AxionClient *client, const char *country, const char *exchange) {
     const char *keys[] = {"country", "exchange"};
     const char *values[] = {country, exchange};
     char *query = _build_query(keys, values, 2);
@@ -331,13 +331,13 @@ AxionResponse* axion_get_forex_tickers(AxionClient *client, const char *country,
     return response;
 }
 
-AxionResponse* axion_get_forex_ticker_by_symbol(AxionClient *client, const char *ticker) {
+AxionResponse* axion_forex_quote(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "forex/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_forex_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+AxionResponse* axion_forex_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
     const char *keys[] = {"from", "to", "frame"};
     const char *values[] = {from_date, to_date, frame};
     char *query = _build_query(keys, values, 3);
@@ -349,7 +349,7 @@ AxionResponse* axion_get_forex_prices(AxionClient *client, const char *ticker, c
 }
 
 // Futures API
-AxionResponse* axion_get_futures_tickers(AxionClient *client, const char *exchange) {
+AxionResponse* axion_futures_tickers(AxionClient *client, const char *exchange) {
     const char *keys[] = {"exchange"};
     const char *values[] = {exchange};
     char *query = _build_query(keys, values, 1);
@@ -358,13 +358,13 @@ AxionResponse* axion_get_futures_tickers(AxionClient *client, const char *exchan
     return response;
 }
 
-AxionResponse* axion_get_futures_ticker_by_symbol(AxionClient *client, const char *ticker) {
+AxionResponse* axion_futures_quote(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "futures/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_futures_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+AxionResponse* axion_futures_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
     const char *keys[] = {"from", "to", "frame"};
     const char *values[] = {from_date, to_date, frame};
     char *query = _build_query(keys, values, 3);
@@ -376,7 +376,7 @@ AxionResponse* axion_get_futures_prices(AxionClient *client, const char *ticker,
 }
 
 // Indices API
-AxionResponse* axion_get_index_tickers(AxionClient *client, const char *exchange) {
+AxionResponse* axion_indices_tickers(AxionClient *client, const char *exchange) {
     const char *keys[] = {"exchange"};
     const char *values[] = {exchange};
     char *query = _build_query(keys, values, 1);
@@ -385,13 +385,13 @@ AxionResponse* axion_get_index_tickers(AxionClient *client, const char *exchange
     return response;
 }
 
-AxionResponse* axion_get_index_ticker_by_symbol(AxionClient *client, const char *ticker) {
+AxionResponse* axion_indices_quote(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "indices/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_index_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+AxionResponse* axion_indices_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
     const char *keys[] = {"from", "to", "frame"};
     const char *values[] = {from_date, to_date, frame};
     char *query = _build_query(keys, values, 3);
@@ -403,201 +403,201 @@ AxionResponse* axion_get_index_prices(AxionClient *client, const char *ticker, c
 }
 
 // Economic API
-AxionResponse* axion_search_econ(AxionClient *client, const char *query) {
+AxionResponse* axion_econ_search(AxionClient *client, const char *query) {
     char full_query[512];
     snprintf(full_query, sizeof(full_query), "query=%s", query);
     return _axion_request(client, "econ/search", full_query);
 }
 
-AxionResponse* axion_get_econ_dataset(AxionClient *client, const char *series_id) {
+AxionResponse* axion_econ_dataset(AxionClient *client, const char *series_id) {
     char path[256];
     snprintf(path, sizeof(path), "econ/dataset/%s", series_id);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_econ_calendar(AxionClient *client, const char *from_date, const char *to_date, const char *country, int min_importance, const char *currency, const char *category) {
+AxionResponse* axion_econ_calendar(AxionClient *client, const char *from_date, const char *to_date, const char *country, int min_importance, const char *currency, const char *category) {
     char query[1024] = "";
     int offset = 0;
-    
+
     if (from_date) offset += snprintf(query + offset, sizeof(query) - offset, "from=%s&", from_date);
     if (to_date) offset += snprintf(query + offset, sizeof(query) - offset, "to=%s&", to_date);
     if (country) offset += snprintf(query + offset, sizeof(query) - offset, "country=%s&", country);
     if (min_importance >= 0) offset += snprintf(query + offset, sizeof(query) - offset, "minImportance=%d&", min_importance);
     if (currency) offset += snprintf(query + offset, sizeof(query) - offset, "currency=%s&", currency);
     if (category) offset += snprintf(query + offset, sizeof(query) - offset, "category=%s&", category);
-    
+
     // Remove trailing '&' if it exists
     if (offset > 0) {
         query[offset - 1] = '\0';
     }
-    
+
     return _axion_request(client, "econ/calendar", query[0] ? query : NULL);
 }
 
 // News API
-AxionResponse* axion_get_news(AxionClient *client) {
+AxionResponse* axion_news_general(AxionClient *client) {
     return _axion_request(client, "news", NULL);
 }
 
-AxionResponse* axion_get_company_news(AxionClient *client, const char *ticker) {
+AxionResponse* axion_news_company(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "news/%s", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_country_news(AxionClient *client, const char *country) {
+AxionResponse* axion_news_country(AxionClient *client, const char *country) {
     char path[256];
     snprintf(path, sizeof(path), "news/country/%s", country);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_category_news(AxionClient *client, const char *category) {
+AxionResponse* axion_news_category(AxionClient *client, const char *category) {
     char path[256];
     snprintf(path, sizeof(path), "news/category/%s", category);
     return _axion_request(client, path, NULL);
 }
 
 // Sentiment API
-AxionResponse* axion_get_sentiment_all(AxionClient *client, const char *ticker) {
+AxionResponse* axion_sentiment_all(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "sentiment/%s/all", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_sentiment_social(AxionClient *client, const char *ticker) {
+AxionResponse* axion_sentiment_social(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "sentiment/%s/social", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_sentiment_news(AxionClient *client, const char *ticker) {
+AxionResponse* axion_sentiment_news(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "sentiment/%s/news", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_sentiment_analyst(AxionClient *client, const char *ticker) {
+AxionResponse* axion_sentiment_analyst(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "sentiment/%s/analyst", ticker);
     return _axion_request(client, path, NULL);
 }
 
 // Company Profile API
-AxionResponse* axion_get_company_asset_profile(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_asset(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/asset", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_recommendation_trend(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_recommendation(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/recommendation", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_cashflow(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_cashflow(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/cashflow", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_index_trend(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_index_trend(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/trend/index", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_statistics(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_statistics(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/statistics", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_income_statement(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_income(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/income", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_fund_ownership(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_fund(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/fund", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_summary(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_summary(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/summary", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_insider_holders(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_insiders(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/insiders", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_calendar_events(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_calendar(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/calendar", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_balance_sheet(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_balancesheet(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/balancesheet", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_earnings_trend(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_earnings_trend(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/trend/earnings", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_institution_ownership(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_institution_ownership(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/institution", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_major_holders(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_ownership(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/ownership", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_earnings_history(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_earnings(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/earnings", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_profile_info(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_info(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/info", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_share_activity(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_activity(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/activity", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_insider_transactions(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_transactions(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/transactions", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_financial_data(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_financials(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/financials", ticker);
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_get_company_website_traffic(AxionClient *client, const char *ticker) {
+AxionResponse* axion_profiles_traffic(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "profiles/%s/traffic", ticker);
     return _axion_request(client, path, NULL);
