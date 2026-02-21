@@ -22,10 +22,10 @@ int main() {
             printf("Response: %s\n", json_str);
             free(json_str);
         }
-        axion_free_response(response);
+        axion_response(response);
     }
 
     // Clean up
-    axion_free_client(client);
+    axion_client(client);
     return 0;
 }
