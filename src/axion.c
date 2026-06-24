@@ -231,6 +231,32 @@ AxionResponse* axion_esg_data(AxionClient *client, const char *ticker) {
 // =====================================================================
 // ETF API
 // =====================================================================
+AxionResponse* axion_etfs_tickers(AxionClient *client, const char *country, const char *exchange) {
+    const char *keys[] = {"country", "exchange"};
+    const char *values[] = {country, exchange};
+    char *query = _build_query(keys, values, 2);
+    AxionResponse *resp = _axion_request(client, "etfs/tickers", query);
+    free(query);
+    return resp;
+}
+
+AxionResponse* axion_etfs_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+    const char *keys[] = {"from", "to", "frame"};
+    const char *values[] = {from_date, to_date, frame};
+    char *query = _build_query(keys, values, 3);
+    char path[256];
+    snprintf(path, sizeof(path), "etfs/%s/prices", ticker);
+    AxionResponse *resp = _axion_request(client, path, query);
+    free(query);
+    return resp;
+}
+
+AxionResponse* axion_etfs_ticker(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "etfs/%s", ticker);
+    return _axion_request(client, path, NULL);
+}
+
 AxionResponse* axion_etfs_fund(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "etfs/%s/fund", ticker);
@@ -246,6 +272,50 @@ AxionResponse* axion_etfs_holdings(AxionClient *client, const char *ticker) {
 AxionResponse* axion_etfs_exposure(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "etfs/%s/exposure", ticker);
+    return _axion_request(client, path, NULL);
+}
+
+AxionResponse* axion_etfs_weights(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "etfs/%s/weights", ticker);
+    return _axion_request(client, path, NULL);
+}
+
+AxionResponse* axion_etfs_gainers(AxionClient *client) {
+    return _axion_request(client, "etfs/gainers", NULL);
+}
+
+AxionResponse* axion_etfs_losers(AxionClient *client) {
+    return _axion_request(client, "etfs/losers", NULL);
+}
+
+AxionResponse* axion_etfs_list_market(AxionClient *client) {
+    return _axion_request(client, "etfs/list/market", NULL);
+}
+
+AxionResponse* axion_etfs_list_country(AxionClient *client) {
+    return _axion_request(client, "etfs/list/country", NULL);
+}
+
+AxionResponse* axion_etfs_list_currency(AxionClient *client) {
+    return _axion_request(client, "etfs/list/currency", NULL);
+}
+
+AxionResponse* axion_etfs_list_sector(AxionClient *client) {
+    return _axion_request(client, "etfs/list/sector", NULL);
+}
+
+AxionResponse* axion_etfs_list_industry(AxionClient *client) {
+    return _axion_request(client, "etfs/list/industry", NULL);
+}
+
+AxionResponse* axion_etfs_list_type(AxionClient *client) {
+    return _axion_request(client, "etfs/list/type", NULL);
+}
+
+AxionResponse* axion_etfs_quote(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "etfs/%s/quote", ticker);
     return _axion_request(client, path, NULL);
 }
 
@@ -299,6 +369,44 @@ AxionResponse* axion_stocks_prices(AxionClient *client, const char *ticker, cons
     return resp;
 }
 
+AxionResponse* axion_stocks_gainers(AxionClient *client) {
+    return _axion_request(client, "stocks/gainers", NULL);
+}
+
+AxionResponse* axion_stocks_losers(AxionClient *client) {
+    return _axion_request(client, "stocks/losers", NULL);
+}
+
+AxionResponse* axion_stocks_list_market(AxionClient *client) {
+    return _axion_request(client, "stocks/list/market", NULL);
+}
+
+AxionResponse* axion_stocks_list_country(AxionClient *client) {
+    return _axion_request(client, "stocks/list/country", NULL);
+}
+
+AxionResponse* axion_stocks_list_currency(AxionClient *client) {
+    return _axion_request(client, "stocks/list/currency", NULL);
+}
+
+AxionResponse* axion_stocks_list_sector(AxionClient *client) {
+    return _axion_request(client, "stocks/list/sector", NULL);
+}
+
+AxionResponse* axion_stocks_list_industry(AxionClient *client) {
+    return _axion_request(client, "stocks/list/industry", NULL);
+}
+
+AxionResponse* axion_stocks_list_type(AxionClient *client) {
+    return _axion_request(client, "stocks/list/type", NULL);
+}
+
+AxionResponse* axion_stocks_quote(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "stocks/%s/quote", ticker);
+    return _axion_request(client, path, NULL);
+}
+
 // =====================================================================
 // CRYPTO API
 // =====================================================================
@@ -326,6 +434,32 @@ AxionResponse* axion_crypto_prices(AxionClient *client, const char *ticker, cons
     AxionResponse *resp = _axion_request(client, path, query);
     free(query);
     return resp;
+}
+
+AxionResponse* axion_crypto_gainers(AxionClient *client) {
+    return _axion_request(client, "crypto/gainers", NULL);
+}
+
+AxionResponse* axion_crypto_losers(AxionClient *client) {
+    return _axion_request(client, "crypto/losers", NULL);
+}
+
+AxionResponse* axion_crypto_list_category(AxionClient *client) {
+    return _axion_request(client, "crypto/list/category", NULL);
+}
+
+AxionResponse* axion_crypto_list_rating(AxionClient *client) {
+    return _axion_request(client, "crypto/list/rating", NULL);
+}
+
+AxionResponse* axion_crypto_list_type(AxionClient *client) {
+    return _axion_request(client, "crypto/list/type", NULL);
+}
+
+AxionResponse* axion_crypto_quote(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "crypto/%s/quote", ticker);
+    return _axion_request(client, path, NULL);
 }
 
 // =====================================================================
@@ -357,6 +491,32 @@ AxionResponse* axion_forex_prices(AxionClient *client, const char *ticker, const
     return resp;
 }
 
+AxionResponse* axion_forex_gainers(AxionClient *client) {
+    return _axion_request(client, "forex/gainers", NULL);
+}
+
+AxionResponse* axion_forex_losers(AxionClient *client) {
+    return _axion_request(client, "forex/losers", NULL);
+}
+
+AxionResponse* axion_forex_list_exchange(AxionClient *client) {
+    return _axion_request(client, "forex/list/exchange", NULL);
+}
+
+AxionResponse* axion_forex_list_rating(AxionClient *client) {
+    return _axion_request(client, "forex/list/rating", NULL);
+}
+
+AxionResponse* axion_forex_list_country(AxionClient *client) {
+    return _axion_request(client, "forex/list/country", NULL);
+}
+
+AxionResponse* axion_forex_quote(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "forex/%s/quote", ticker);
+    return _axion_request(client, path, NULL);
+}
+
 // =====================================================================
 // FUTURES API
 // =====================================================================
@@ -386,6 +546,36 @@ AxionResponse* axion_futures_prices(AxionClient *client, const char *ticker, con
     return resp;
 }
 
+AxionResponse* axion_futures_gainers(AxionClient *client) {
+    return _axion_request(client, "futures/gainers", NULL);
+}
+
+AxionResponse* axion_futures_losers(AxionClient *client) {
+    return _axion_request(client, "futures/losers", NULL);
+}
+
+AxionResponse* axion_futures_list_exchange(AxionClient *client) {
+    return _axion_request(client, "futures/list/exchange", NULL);
+}
+
+AxionResponse* axion_futures_list_currency(AxionClient *client) {
+    return _axion_request(client, "futures/list/currency", NULL);
+}
+
+AxionResponse* axion_futures_list_timezone(AxionClient *client) {
+    return _axion_request(client, "futures/list/timezone", NULL);
+}
+
+AxionResponse* axion_futures_list_country(AxionClient *client) {
+    return _axion_request(client, "futures/list/country", NULL);
+}
+
+AxionResponse* axion_futures_quote(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "futures/%s/quote", ticker);
+    return _axion_request(client, path, NULL);
+}
+
 // =====================================================================
 // INDICES API
 // =====================================================================
@@ -413,6 +603,32 @@ AxionResponse* axion_indices_prices(AxionClient *client, const char *ticker, con
     AxionResponse *resp = _axion_request(client, path, query);
     free(query);
     return resp;
+}
+
+AxionResponse* axion_indices_gainers(AxionClient *client) {
+    return _axion_request(client, "indices/gainers", NULL);
+}
+
+AxionResponse* axion_indices_losers(AxionClient *client) {
+    return _axion_request(client, "indices/losers", NULL);
+}
+
+AxionResponse* axion_indices_list_exchange(AxionClient *client) {
+    return _axion_request(client, "indices/list/exchange", NULL);
+}
+
+AxionResponse* axion_indices_list_timezone(AxionClient *client) {
+    return _axion_request(client, "indices/list/timezone", NULL);
+}
+
+AxionResponse* axion_indices_list_country(AxionClient *client) {
+    return _axion_request(client, "indices/list/country", NULL);
+}
+
+AxionResponse* axion_indices_quote(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "indices/%s/quote", ticker);
+    return _axion_request(client, path, NULL);
 }
 
 // =====================================================================
