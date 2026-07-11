@@ -281,12 +281,42 @@ AxionResponse* axion_etfs_weights(AxionClient *client, const char *ticker) {
     return _axion_request(client, path, NULL);
 }
 
-AxionResponse* axion_etfs_gainers(AxionClient *client) {
-    return _axion_request(client, "etfs/gainers", NULL);
+AxionResponse* axion_etfs_gainers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "etfs/gainers", query);
+    free(query);
+    return resp;
 }
 
-AxionResponse* axion_etfs_losers(AxionClient *client) {
-    return _axion_request(client, "etfs/losers", NULL);
+AxionResponse* axion_etfs_losers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "etfs/losers", query);
+    free(query);
+    return resp;
 }
 
 AxionResponse* axion_etfs_list_market(AxionClient *client) {
@@ -369,12 +399,48 @@ AxionResponse* axion_stocks_prices(AxionClient *client, const char *ticker, cons
     return resp;
 }
 
-AxionResponse* axion_stocks_gainers(AxionClient *client) {
-    return _axion_request(client, "stocks/gainers", NULL);
+AxionResponse* axion_stocks_gainers(AxionClient *client, int days, int limit, const char *market) {
+    const char *keys[3];
+    const char *values[3];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    if (market) {
+        keys[count] = "market"; values[count++] = market;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "stocks/gainers", query);
+    free(query);
+    return resp;
 }
 
-AxionResponse* axion_stocks_losers(AxionClient *client) {
-    return _axion_request(client, "stocks/losers", NULL);
+AxionResponse* axion_stocks_losers(AxionClient *client, int days, int limit, const char *market) {
+    const char *keys[3];
+    const char *values[3];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    if (market) {
+        keys[count] = "market"; values[count++] = market;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "stocks/losers", query);
+    free(query);
+    return resp;
 }
 
 AxionResponse* axion_stocks_list_market(AxionClient *client) {
@@ -407,6 +473,15 @@ AxionResponse* axion_stocks_quote(AxionClient *client, const char *ticker) {
     return _axion_request(client, path, NULL);
 }
 
+// Legacy aliases
+AxionResponse* axion_get_stock_ticker_by_symbol(AxionClient *client, const char *ticker) {
+    return axion_stocks_ticker(client, ticker);
+}
+
+AxionResponse* axion_get_stock_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame) {
+    return axion_stocks_prices(client, ticker, from_date, to_date, frame);
+}
+
 // =====================================================================
 // CRYPTO API
 // =====================================================================
@@ -436,12 +511,42 @@ AxionResponse* axion_crypto_prices(AxionClient *client, const char *ticker, cons
     return resp;
 }
 
-AxionResponse* axion_crypto_gainers(AxionClient *client) {
-    return _axion_request(client, "crypto/gainers", NULL);
+AxionResponse* axion_crypto_gainers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "crypto/gainers", query);
+    free(query);
+    return resp;
 }
 
-AxionResponse* axion_crypto_losers(AxionClient *client) {
-    return _axion_request(client, "crypto/losers", NULL);
+AxionResponse* axion_crypto_losers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "crypto/losers", query);
+    free(query);
+    return resp;
 }
 
 AxionResponse* axion_crypto_list_category(AxionClient *client) {
@@ -491,12 +596,42 @@ AxionResponse* axion_forex_prices(AxionClient *client, const char *ticker, const
     return resp;
 }
 
-AxionResponse* axion_forex_gainers(AxionClient *client) {
-    return _axion_request(client, "forex/gainers", NULL);
+AxionResponse* axion_forex_gainers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "forex/gainers", query);
+    free(query);
+    return resp;
 }
 
-AxionResponse* axion_forex_losers(AxionClient *client) {
-    return _axion_request(client, "forex/losers", NULL);
+AxionResponse* axion_forex_losers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "forex/losers", query);
+    free(query);
+    return resp;
 }
 
 AxionResponse* axion_forex_list_exchange(AxionClient *client) {
@@ -546,12 +681,42 @@ AxionResponse* axion_futures_prices(AxionClient *client, const char *ticker, con
     return resp;
 }
 
-AxionResponse* axion_futures_gainers(AxionClient *client) {
-    return _axion_request(client, "futures/gainers", NULL);
+AxionResponse* axion_futures_gainers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "futures/gainers", query);
+    free(query);
+    return resp;
 }
 
-AxionResponse* axion_futures_losers(AxionClient *client) {
-    return _axion_request(client, "futures/losers", NULL);
+AxionResponse* axion_futures_losers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "futures/losers", query);
+    free(query);
+    return resp;
 }
 
 AxionResponse* axion_futures_list_exchange(AxionClient *client) {
@@ -605,12 +770,42 @@ AxionResponse* axion_indices_prices(AxionClient *client, const char *ticker, con
     return resp;
 }
 
-AxionResponse* axion_indices_gainers(AxionClient *client) {
-    return _axion_request(client, "indices/gainers", NULL);
+AxionResponse* axion_indices_gainers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "indices/gainers", query);
+    free(query);
+    return resp;
 }
 
-AxionResponse* axion_indices_losers(AxionClient *client) {
-    return _axion_request(client, "indices/losers", NULL);
+AxionResponse* axion_indices_losers(AxionClient *client, int days, int limit) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    char days_str[32], limit_str[32];
+    if (days > 0) {
+        snprintf(days_str, sizeof(days_str), "%d", days);
+        keys[count] = "days"; values[count++] = days_str;
+    }
+    if (limit > 0) {
+        snprintf(limit_str, sizeof(limit_str), "%d", limit);
+        keys[count] = "limit"; values[count++] = limit_str;
+    }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    AxionResponse *resp = _axion_request(client, "indices/losers", query);
+    free(query);
+    return resp;
 }
 
 AxionResponse* axion_indices_list_exchange(AxionClient *client) {
@@ -631,12 +826,31 @@ AxionResponse* axion_indices_quote(AxionClient *client, const char *ticker) {
     return _axion_request(client, path, NULL);
 }
 
+AxionResponse* axion_indices_components(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "indices/%s/components", ticker);
+    return _axion_request(client, path, NULL);
+}
+
+AxionResponse* axion_indices_exposure(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "indices/%s/exposure", ticker);
+    return _axion_request(client, path, NULL);
+}
+
 // =====================================================================
 // ECONOMIC API
 // =====================================================================
 AxionResponse* axion_econ_search(AxionClient *client, const char *query) {
     char *q = _build_query((const char*[]){"query"}, (const char*[]){query}, 1);
     AxionResponse *resp = _axion_request(client, "econ/search", q);
+    free(q);
+    return resp;
+}
+
+AxionResponse* axion_econ_find(AxionClient *client, const char *query) {
+    char *q = _build_query((const char*[]){"query"}, (const char*[]){query}, 1);
+    AxionResponse *resp = _axion_request(client, "econ/find", q);
     free(q);
     return resp;
 }
@@ -807,6 +1021,24 @@ AxionResponse* axion_earnings_report(AxionClient *client, const char *ticker, co
     return resp;
 }
 
+AxionResponse* axion_earnings_transcript_sentiment(AxionClient *client, const char *id) {
+    char *q = _build_query((const char*[]){"id"}, (const char*[]){id}, 1);
+    AxionResponse *resp = _axion_request(client, "earnings/transcript/sentiment", q);
+    free(q);
+    return resp;
+}
+
+AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker, const char *year, const char *quarter) {
+    const char *keys[] = {"year", "quarter"};
+    const char *values[] = {year, quarter};
+    char *query = _build_query(keys, values, 2);
+    char path[256];
+    snprintf(path, sizeof(path), "earnings/%s/transcript", ticker);
+    AxionResponse *resp = _axion_request(client, path, query);
+    free(query);
+    return resp;
+}
+
 // =====================================================================
 // FILINGS API
 // =====================================================================
@@ -870,6 +1102,20 @@ AxionResponse* axion_filings_search(AxionClient *client,
     char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
     AxionResponse *resp = _axion_request(client, "filings/search", query);
     free(query);
+    return resp;
+}
+
+AxionResponse* axion_filings_document_text(AxionClient *client, const char *document_id) {
+    char *q = _build_query((const char*[]){"documentId"}, (const char*[]){document_id}, 1);
+    AxionResponse *resp = _axion_request(client, "filings/document/text", q);
+    free(q);
+    return resp;
+}
+
+AxionResponse* axion_filings_document_sentiment(AxionClient *client, const char *document_id) {
+    char *q = _build_query((const char*[]){"documentId"}, (const char*[]){document_id}, 1);
+    AxionResponse *resp = _axion_request(client, "filings/document/sentiment", q);
+    free(q);
     return resp;
 }
 
@@ -947,6 +1193,32 @@ AxionResponse* axion_financials_snapshot(AxionClient *client, const char *ticker
     return _axion_request(client, path, NULL);
 }
 
+static AxionResponse* _financials_statement_request(AxionClient *client, const char *ticker, const char *statement, const char *year, const char *quarter) {
+    const char *keys[2];
+    const char *values[2];
+    int count = 0;
+    if (year)   { keys[count] = "year";   values[count++] = year; }
+    if (quarter){ keys[count] = "quarter"; values[count++] = quarter; }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    char path[256];
+    snprintf(path, sizeof(path), "financials/statements/%s/%s", ticker, statement);
+    AxionResponse *resp = _axion_request(client, path, query);
+    free(query);
+    return resp;
+}
+
+AxionResponse* axion_financials_balance_sheet(AxionClient *client, const char *ticker, const char *year, const char *quarter) {
+    return _financials_statement_request(client, ticker, "balance", year, quarter);
+}
+
+AxionResponse* axion_financials_income_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter) {
+    return _financials_statement_request(client, ticker, "income", year, quarter);
+}
+
+AxionResponse* axion_financials_cash_flow_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter) {
+    return _financials_statement_request(client, ticker, "cashflow", year, quarter);
+}
+
 // =====================================================================
 // INSIDERS API
 // =====================================================================
@@ -991,6 +1263,6 @@ AxionResponse* axion_insiders_transactions(AxionClient *client, const char *tick
 // =====================================================================
 AxionResponse* axion_webtraffic_traffic(AxionClient *client, const char *ticker) {
     char path[256];
-    snprintf(path, sizeof(path), "webtraffic/%s/traffic", ticker);
+    snprintf(path, sizeof(path), "web-traffic/%s/traffic", ticker);
     return _axion_request(client, path, NULL);
 }

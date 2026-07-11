@@ -116,6 +116,15 @@ struct AxionResponse {
 AxionResponse* axion_stocks_tickers(AxionClient *client, const char *country, const char *exchange);
 AxionResponse* axion_stocks_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_stocks_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
+AxionResponse* axion_stocks_gainers(AxionClient *client, int days, int limit, const char *market);
+AxionResponse* axion_stocks_losers(AxionClient *client, int days, int limit, const char *market);
+AxionResponse* axion_stocks_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_stocks_list_market(AxionClient *client);
+AxionResponse* axion_stocks_list_country(AxionClient *client);
+AxionResponse* axion_stocks_list_currency(AxionClient *client);
+AxionResponse* axion_stocks_list_sector(AxionClient *client);
+AxionResponse* axion_stocks_list_industry(AxionClient *client);
+AxionResponse* axion_stocks_list_type(AxionClient *client);
 ```
 
 #### Cryptocurrency
@@ -124,6 +133,12 @@ AxionResponse* axion_stocks_prices(AxionClient *client, const char *ticker, cons
 AxionResponse* axion_crypto_tickers(AxionClient *client, const char *type);
 AxionResponse* axion_crypto_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_crypto_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
+AxionResponse* axion_crypto_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_crypto_losers(AxionClient *client, int days, int limit);
+AxionResponse* axion_crypto_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_crypto_list_category(AxionClient *client);
+AxionResponse* axion_crypto_list_rating(AxionClient *client);
+AxionResponse* axion_crypto_list_type(AxionClient *client);
 ```
 
 #### Forex
@@ -132,6 +147,12 @@ AxionResponse* axion_crypto_prices(AxionClient *client, const char *ticker, cons
 AxionResponse* axion_forex_tickers(AxionClient *client, const char *country, const char *exchange);
 AxionResponse* axion_forex_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_forex_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
+AxionResponse* axion_forex_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_forex_losers(AxionClient *client, int days, int limit);
+AxionResponse* axion_forex_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_forex_list_exchange(AxionClient *client);
+AxionResponse* axion_forex_list_rating(AxionClient *client);
+AxionResponse* axion_forex_list_country(AxionClient *client);
 ```
 
 #### Futures
@@ -140,6 +161,13 @@ AxionResponse* axion_forex_prices(AxionClient *client, const char *ticker, const
 AxionResponse* axion_futures_tickers(AxionClient *client, const char *exchange);
 AxionResponse* axion_futures_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_futures_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
+AxionResponse* axion_futures_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_futures_losers(AxionClient *client, int days, int limit);
+AxionResponse* axion_futures_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_futures_list_exchange(AxionClient *client);
+AxionResponse* axion_futures_list_currency(AxionClient *client);
+AxionResponse* axion_futures_list_timezone(AxionClient *client);
+AxionResponse* axion_futures_list_country(AxionClient *client);
 ```
 
 #### Indices
@@ -148,6 +176,14 @@ AxionResponse* axion_futures_prices(AxionClient *client, const char *ticker, con
 AxionResponse* axion_indices_tickers(AxionClient *client, const char *exchange);
 AxionResponse* axion_indices_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_indices_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
+AxionResponse* axion_indices_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_indices_losers(AxionClient *client, int days, int limit);
+AxionResponse* axion_indices_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_indices_components(AxionClient *client, const char *ticker);
+AxionResponse* axion_indices_exposure(AxionClient *client, const char *ticker);
+AxionResponse* axion_indices_list_exchange(AxionClient *client);
+AxionResponse* axion_indices_list_timezone(AxionClient *client);
+AxionResponse* axion_indices_list_country(AxionClient *client);
 ```
 
 > **`frame` values:** `"1d"`, `"1h"`, `"5m"`, etc. Pass `NULL` for any optional parameter.
@@ -185,6 +221,10 @@ AxionResponse* axion_financials_shares_outstanding_basic(AxionClient *client, co
 AxionResponse* axion_financials_shares_outstanding_diluted(AxionClient *client, const char *ticker, int periods);
 AxionResponse* axion_financials_metrics(AxionClient *client, const char *ticker);
 AxionResponse* axion_financials_snapshot(AxionClient *client, const char *ticker);
+// Full financial statements (pass NULL for year/quarter to get latest)
+AxionResponse* axion_financials_balance_sheet(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_financials_income_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_financials_cash_flow_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 ```
 
 ---
@@ -196,6 +236,8 @@ AxionResponse* axion_earnings_history(AxionClient *client, const char *ticker);
 AxionResponse* axion_earnings_trend(AxionClient *client, const char *ticker);
 AxionResponse* axion_earnings_index(AxionClient *client, const char *ticker);
 AxionResponse* axion_earnings_report(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_earnings_transcript_sentiment(AxionClient *client, const char *id);
+AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 ```
 
 ---
@@ -214,6 +256,12 @@ AxionResponse* axion_filings_desc_forms(AxionClient *client);
 
 // Search filings
 AxionResponse* axion_filings_search(AxionClient *client, const char *year, const char *quarter, const char *form, const char *ticker);
+
+// Get raw text of a filing document
+AxionResponse* axion_filings_document_text(AxionClient *client, const char *document_id);
+
+// Get sentiment of a filing document
+AxionResponse* axion_filings_document_sentiment(AxionClient *client, const char *document_id);
 ```
 
 ---
@@ -236,6 +284,9 @@ AxionResponse* axion_insiders_transactions(AxionClient *client, const char *tick
 ```c
 // Search FRED economic datasets
 AxionResponse* axion_econ_search(AxionClient *client, const char *query);
+
+// Find economic series by natural language description
+AxionResponse* axion_econ_find(AxionClient *client, const char *query);
 
 // Get a dataset by series ID
 AxionResponse* axion_econ_dataset(AxionClient *client, const char *series_id);
@@ -299,9 +350,22 @@ AxionResponse* axion_supply_chain_peers(AxionClient *client, const char *ticker)
 ### ETF Data
 
 ```c
+AxionResponse* axion_etfs_tickers(AxionClient *client, const char *country, const char *exchange);
+AxionResponse* axion_etfs_ticker(AxionClient *client, const char *ticker);
+AxionResponse* axion_etfs_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
+AxionResponse* axion_etfs_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_etfs_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_etfs_losers(AxionClient *client, int days, int limit);
 AxionResponse* axion_etfs_fund(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_holdings(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_exposure(AxionClient *client, const char *ticker);
+AxionResponse* axion_etfs_weights(AxionClient *client, const char *ticker);
+AxionResponse* axion_etfs_list_market(AxionClient *client);
+AxionResponse* axion_etfs_list_country(AxionClient *client);
+AxionResponse* axion_etfs_list_currency(AxionClient *client);
+AxionResponse* axion_etfs_list_sector(AxionClient *client);
+AxionResponse* axion_etfs_list_industry(AxionClient *client);
+AxionResponse* axion_etfs_list_type(AxionClient *client);
 ```
 
 ---

@@ -33,7 +33,7 @@ typedef struct {
  * @param api_key The API key for authenticating with the Axion API.
  * @return A pointer to a new AxionClient instance, or NULL on failure.
  *
- * The returned client must be freed using axion_free_client().
+ * The returned client must be freed using axion_client().
  */
 AxionClient* axion_init(const char *api_key);
 
@@ -42,14 +42,14 @@ AxionClient* axion_init(const char *api_key);
  *
  * @param client The Axion client to free.
  */
-void axion_free_client(AxionClient *client);
+void axion_client(AxionClient *client);
 
 /**
  * @brief Frees the memory allocated for an AxionResponse.
  *
  * @param response The response to free.
  */
-void axion_free_response(AxionResponse *response);
+void axion_response(AxionResponse *response);
 
 /**
  * @brief Get a single stock ticker by its ticker symbol.
@@ -57,7 +57,7 @@ void axion_free_response(AxionResponse *response);
  * @param client The initialized Axion client.
  * @param ticker The stock ticker symbol (e.g., "AAPL").
  * @return An AxionResponse containing the API result. The caller is responsible
- *         for freeing this response with axion_free_response().
+ *         for freeing this response with axion_response().
  */
 AxionResponse* axion_get_stock_ticker_by_symbol(AxionClient *client, const char *ticker);
 
@@ -70,7 +70,7 @@ AxionResponse* axion_get_stock_ticker_by_symbol(AxionClient *client, const char 
  * @param to_date Optional end date (YYYY-MM-DD). Can be NULL.
  * @param frame Optional time frame ('daily', 'weekly', etc.). Can be NULL.
  * @return An AxionResponse containing the API result. The caller is responsible
- *         for freeing this response with axion_free_response().
+ *         for freeing this response with axion_response().
  */
 AxionResponse* axion_get_stock_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
 
@@ -96,8 +96,8 @@ AxionResponse* axion_etfs_fund(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_holdings(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_exposure(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_weights(AxionClient *client, const char *ticker);
-AxionResponse* axion_etfs_gainers(AxionClient *client);
-AxionResponse* axion_etfs_losers(AxionClient *client);
+AxionResponse* axion_etfs_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_etfs_losers(AxionClient *client, int days, int limit);
 AxionResponse* axion_etfs_list_market(AxionClient *client);
 AxionResponse* axion_etfs_list_country(AxionClient *client);
 AxionResponse* axion_etfs_list_currency(AxionClient *client);
@@ -119,8 +119,8 @@ AxionResponse* axion_supply_chain_suppliers(AxionClient *client, const char *tic
 AxionResponse* axion_stocks_tickers(AxionClient *client, const char *country, const char *exchange);
 AxionResponse* axion_stocks_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_stocks_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
-AxionResponse* axion_stocks_gainers(AxionClient *client);
-AxionResponse* axion_stocks_losers(AxionClient *client);
+AxionResponse* axion_stocks_gainers(AxionClient *client, int days, int limit, const char *market);
+AxionResponse* axion_stocks_losers(AxionClient *client, int days, int limit, const char *market);
 AxionResponse* axion_stocks_list_market(AxionClient *client);
 AxionResponse* axion_stocks_list_country(AxionClient *client);
 AxionResponse* axion_stocks_list_currency(AxionClient *client);
@@ -135,8 +135,8 @@ AxionResponse* axion_stocks_quote(AxionClient *client, const char *ticker);
 AxionResponse* axion_crypto_tickers(AxionClient *client, const char *type);
 AxionResponse* axion_crypto_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_crypto_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
-AxionResponse* axion_crypto_gainers(AxionClient *client);
-AxionResponse* axion_crypto_losers(AxionClient *client);
+AxionResponse* axion_crypto_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_crypto_losers(AxionClient *client, int days, int limit);
 AxionResponse* axion_crypto_list_category(AxionClient *client);
 AxionResponse* axion_crypto_list_rating(AxionClient *client);
 AxionResponse* axion_crypto_list_type(AxionClient *client);
@@ -148,8 +148,8 @@ AxionResponse* axion_crypto_quote(AxionClient *client, const char *ticker);
 AxionResponse* axion_forex_tickers(AxionClient *client, const char *country, const char *exchange);
 AxionResponse* axion_forex_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_forex_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
-AxionResponse* axion_forex_gainers(AxionClient *client);
-AxionResponse* axion_forex_losers(AxionClient *client);
+AxionResponse* axion_forex_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_forex_losers(AxionClient *client, int days, int limit);
 AxionResponse* axion_forex_list_exchange(AxionClient *client);
 AxionResponse* axion_forex_list_rating(AxionClient *client);
 AxionResponse* axion_forex_list_country(AxionClient *client);
@@ -161,8 +161,8 @@ AxionResponse* axion_forex_quote(AxionClient *client, const char *ticker);
 AxionResponse* axion_futures_tickers(AxionClient *client, const char *exchange);
 AxionResponse* axion_futures_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_futures_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
-AxionResponse* axion_futures_gainers(AxionClient *client);
-AxionResponse* axion_futures_losers(AxionClient *client);
+AxionResponse* axion_futures_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_futures_losers(AxionClient *client, int days, int limit);
 AxionResponse* axion_futures_list_exchange(AxionClient *client);
 AxionResponse* axion_futures_list_currency(AxionClient *client);
 AxionResponse* axion_futures_list_timezone(AxionClient *client);
@@ -175,17 +175,20 @@ AxionResponse* axion_futures_quote(AxionClient *client, const char *ticker);
 AxionResponse* axion_indices_tickers(AxionClient *client, const char *exchange);
 AxionResponse* axion_indices_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_indices_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
-AxionResponse* axion_indices_gainers(AxionClient *client);
-AxionResponse* axion_indices_losers(AxionClient *client);
+AxionResponse* axion_indices_gainers(AxionClient *client, int days, int limit);
+AxionResponse* axion_indices_losers(AxionClient *client, int days, int limit);
 AxionResponse* axion_indices_list_exchange(AxionClient *client);
 AxionResponse* axion_indices_list_timezone(AxionClient *client);
 AxionResponse* axion_indices_list_country(AxionClient *client);
 AxionResponse* axion_indices_quote(AxionClient *client, const char *ticker);
+AxionResponse* axion_indices_components(AxionClient *client, const char *ticker);
+AxionResponse* axion_indices_exposure(AxionClient *client, const char *ticker);
 
 // =====================================================================
 // ECONOMIC API
 // =====================================================================
 AxionResponse* axion_econ_search(AxionClient *client, const char *query);
+AxionResponse* axion_econ_find(AxionClient *client, const char *query);
 AxionResponse* axion_econ_dataset(AxionClient *client, const char *series_id);
 AxionResponse* axion_econ_calendar(AxionClient *client, const char *from_date, const char *to_date,
                                    const char *country, int min_importance,
@@ -224,6 +227,8 @@ AxionResponse* axion_earnings_history(AxionClient *client, const char *ticker);
 AxionResponse* axion_earnings_trend(AxionClient *client, const char *ticker);
 AxionResponse* axion_earnings_index(AxionClient *client, const char *ticker);
 AxionResponse* axion_earnings_report(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_earnings_transcript_sentiment(AxionClient *client, const char *id);
+AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 
 // =====================================================================
 // FILINGS API
@@ -233,7 +238,9 @@ AxionResponse* axion_filings_forms(AxionClient *client, const char *ticker, cons
                                    const char *year, const char *quarter, int limit);
 AxionResponse* axion_filings_desc_forms(AxionClient *client);
 AxionResponse* axion_filings_search(AxionClient *client, const char *year, const char *quarter,
-                                    const char *form, const char *ticker);
+                                     const char *form, const char *ticker);
+AxionResponse* axion_filings_document_text(AxionClient *client, const char *document_id);
+AxionResponse* axion_filings_document_sentiment(AxionClient *client, const char *document_id);
 
 // =====================================================================
 // FINANCIALS API
@@ -252,6 +259,9 @@ AxionResponse* axion_financials_shares_outstanding_basic(AxionClient *client, co
 AxionResponse* axion_financials_shares_outstanding_diluted(AxionClient *client, const char *ticker, int periods);
 AxionResponse* axion_financials_metrics(AxionClient *client, const char *ticker);
 AxionResponse* axion_financials_snapshot(AxionClient *client, const char *ticker);
+AxionResponse* axion_financials_balance_sheet(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_financials_income_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_financials_cash_flow_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 
 // =====================================================================
 // INSIDERS API
