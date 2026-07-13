@@ -269,6 +269,12 @@ AxionResponse* axion_etfs_holdings(AxionClient *client, const char *ticker) {
     return _axion_request(client, path, NULL);
 }
 
+AxionResponse* axion_etfs_holdings_all(AxionClient *client, const char *ticker) {
+    char path[256];
+    snprintf(path, sizeof(path), "etfs/%s/holdings/all", ticker);
+    return _axion_request(client, path, NULL);
+}
+
 AxionResponse* axion_etfs_exposure(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "etfs/%s/exposure", ticker);

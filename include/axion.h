@@ -94,6 +94,7 @@ AxionResponse* axion_etfs_ticker(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_prices(AxionClient *client, const char *ticker, const char *from_date, const char *to_date, const char *frame);
 AxionResponse* axion_etfs_fund(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_holdings(AxionClient *client, const char *ticker);
+AxionResponse* axion_etfs_holdings_all(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_exposure(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_weights(AxionClient *client, const char *ticker);
 AxionResponse* axion_etfs_gainers(AxionClient *client, int days, int limit);
