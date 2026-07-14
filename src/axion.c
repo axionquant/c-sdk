@@ -1217,6 +1217,49 @@ AxionResponse* axion_financials_balance_sheet(AxionClient *client, const char *t
     return _financials_statement_request(client, ticker, "balance", year, quarter);
 }
 
+static AxionResponse* _financials_historical_request(AxionClient *client, const char *ticker, const char *subpath, const char *from, const char *to, const char *frame) {
+    const char *keys[3];
+    const char *values[3];
+    int count = 0;
+    if (from)  { keys[count] = "from";  values[count++] = from; }
+    if (to)    { keys[count] = "to";    values[count++] = to; }
+    if (frame) { keys[count] = "frame"; values[count++] = frame; }
+    char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
+    char path[256];
+    snprintf(path, sizeof(path), "financials/%s/%s", ticker, subpath);
+    AxionResponse *resp = _axion_request(client, path, query);
+    free(query);
+    return resp;
+}
+
+AxionResponse* axion_financials_eps(AxionClient *client, const char *ticker, const char *from, const char *to) {
+    return _financials_historical_request(client, ticker, "eps", from, to, NULL);
+}
+
+AxionResponse* axion_financials_pe(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame) {
+    return _financials_historical_request(client, ticker, "pe", from, to, frame);
+}
+
+AxionResponse* axion_financials_market_cap(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame) {
+    return _financials_historical_request(client, ticker, "marketcap", from, to, frame);
+}
+
+AxionResponse* axion_financials_roe(AxionClient *client, const char *ticker, const char *from, const char *to) {
+    return _financials_historical_request(client, ticker, "roe", from, to, NULL);
+}
+
+AxionResponse* axion_financials_enterprise_value(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame) {
+    return _financials_historical_request(client, ticker, "ev", from, to, frame);
+}
+
+AxionResponse* axion_financials_ebitda(AxionClient *client, const char *ticker, const char *from, const char *to) {
+    return _financials_historical_request(client, ticker, "ebitda", from, to, NULL);
+}
+
+AxionResponse* axion_financials_debt_to_equity(AxionClient *client, const char *ticker, const char *from, const char *to) {
+    return _financials_historical_request(client, ticker, "de", from, to, NULL);
+}
+
 AxionResponse* axion_financials_income_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter) {
     return _financials_statement_request(client, ticker, "income", year, quarter);
 }

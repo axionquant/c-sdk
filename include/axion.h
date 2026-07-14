@@ -263,6 +263,13 @@ AxionResponse* axion_financials_snapshot(AxionClient *client, const char *ticker
 AxionResponse* axion_financials_balance_sheet(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 AxionResponse* axion_financials_income_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 AxionResponse* axion_financials_cash_flow_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
+AxionResponse* axion_financials_eps(AxionClient *client, const char *ticker, const char *from, const char *to);
+AxionResponse* axion_financials_pe(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame);
+AxionResponse* axion_financials_market_cap(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame);
+AxionResponse* axion_financials_roe(AxionClient *client, const char *ticker, const char *from, const char *to);
+AxionResponse* axion_financials_enterprise_value(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame);
+AxionResponse* axion_financials_ebitda(AxionClient *client, const char *ticker, const char *from, const char *to);
+AxionResponse* axion_financials_debt_to_equity(AxionClient *client, const char *ticker, const char *from, const char *to);
 
 // =====================================================================
 // INSIDERS API
