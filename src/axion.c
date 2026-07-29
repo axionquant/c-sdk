@@ -1048,7 +1048,7 @@ AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker
 // =====================================================================
 // FILINGS API
 // =====================================================================
-AxionResponse* axion_filings_filings(AxionClient *client, const char *ticker, int limit, const char *form) {
+AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, int limit, const char *form) {
     const char *keys[2];
     const char *values[2];
     int count = 0;
@@ -1070,41 +1070,35 @@ AxionResponse* axion_filings_filings(AxionClient *client, const char *ticker, in
     return resp;
 }
 
-AxionResponse* axion_filings_forms(AxionClient *client, const char *ticker, const char *form_type,
-                                    const char *year, const char *quarter, int limit) {
-    const char *keys[3];
-    const char *values[3];
+AxionResponse* axion_filings_history(AxionClient *client, const char *ticker, const char *form_type,
+                                     const char *start_date, const char *end_date) {
+    const char *keys[2];
+    const char *values[2];
     int count = 0;
-    char limit_str[32];
-    if (year)    { keys[count] = "year";   values[count++] = year; }
-    if (quarter) { keys[count] = "quarter"; values[count++] = quarter; }
-    if (limit > 0) {
-        snprintf(limit_str, sizeof(limit_str), "%d", limit);
-        keys[count] = "limit";
-        values[count++] = limit_str;
-    }
+    if (start_date) { keys[count] = "startDate"; values[count++] = start_date; }
+    if (end_date)   { keys[count] = "endDate";   values[count++] = end_date; }
     char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
     char path[256];
-    snprintf(path, sizeof(path), "filings/%s/forms/%s", ticker, form_type);
+    snprintf(path, sizeof(path), "filings/%s/%s", ticker, form_type);
     AxionResponse *resp = _axion_request(client, path, query);
     free(query);
     return resp;
 }
 
-AxionResponse* axion_filings_desc_forms(AxionClient *client) {
-    return _axion_request(client, "filings/desc/forms", NULL);
+AxionResponse* axion_filings_list_forms(AxionClient *client) {
+    return _axion_request(client, "filings/list/forms", NULL);
 }
 
 AxionResponse* axion_filings_search(AxionClient *client,
-                                    const char *year, const char *quarter,
-                                    const char *form, const char *ticker) {
+                                    const char *ticker, const char *form,
+                                    const char *year, const char *quarter) {
     const char *keys[4];
     const char *values[4];
     int count = 0;
+    if (ticker)  { keys[count] = "ticker";  values[count++] = ticker; }
+    if (form)    { keys[count] = "form";    values[count++] = form; }
     if (year)    { keys[count] = "year";    values[count++] = year; }
     if (quarter) { keys[count] = "quarter"; values[count++] = quarter; }
-    if (form)    { keys[count] = "form";    values[count++] = form; }
-    if (ticker)  { keys[count] = "ticker";  values[count++] = ticker; }
     char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
     AxionResponse *resp = _axion_request(client, "filings/search", query);
     free(query);

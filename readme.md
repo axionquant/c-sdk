@@ -253,17 +253,17 @@ AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker
 ### Filings
 
 ```c
-// Get all filings for a ticker (pass limit=0 and form=NULL for defaults)
-AxionResponse* axion_filings_filings(AxionClient *client, const char *ticker, int limit, const char *form);
+// Get recent filings for a ticker (pass limit=0 and form=NULL for defaults)
+AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, int limit, const char *form);
 
-// Get filings by form type
-AxionResponse* axion_filings_forms(AxionClient *client, const char *ticker, const char *form_type, const char *year, const char *quarter, int limit);
+// Get filing history by form type and date range
+AxionResponse* axion_filings_history(AxionClient *client, const char *ticker, const char *form_type, const char *start_date, const char *end_date);
 
 // Get all supported form type descriptions
-AxionResponse* axion_filings_desc_forms(AxionClient *client);
+AxionResponse* axion_filings_list_forms(AxionClient *client);
 
 // Search filings
-AxionResponse* axion_filings_search(AxionClient *client, const char *year, const char *quarter, const char *form, const char *ticker);
+AxionResponse* axion_filings_search(AxionClient *client, const char *ticker, const char *form, const char *year, const char *quarter);
 
 // Get raw text of a filing document
 AxionResponse* axion_filings_document_text(AxionClient *client, const char *document_id);

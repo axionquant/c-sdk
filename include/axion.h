@@ -234,12 +234,12 @@ AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker
 // =====================================================================
 // FILINGS API
 // =====================================================================
-AxionResponse* axion_filings_filings(AxionClient *client, const char *ticker, int limit, const char *form);
-AxionResponse* axion_filings_forms(AxionClient *client, const char *ticker, const char *form_type,
-                                   const char *year, const char *quarter, int limit);
-AxionResponse* axion_filings_desc_forms(AxionClient *client);
-AxionResponse* axion_filings_search(AxionClient *client, const char *year, const char *quarter,
-                                     const char *form, const char *ticker);
+AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, int limit, const char *form);
+AxionResponse* axion_filings_history(AxionClient *client, const char *ticker, const char *form_type,
+                                     const char *start_date, const char *end_date);
+AxionResponse* axion_filings_list_forms(AxionClient *client);
+AxionResponse* axion_filings_search(AxionClient *client, const char *ticker, const char *form,
+                                     const char *year, const char *quarter);
 AxionResponse* axion_filings_document_text(AxionClient *client, const char *document_id);
 AxionResponse* axion_filings_document_sentiment(AxionClient *client, const char *document_id);
 
