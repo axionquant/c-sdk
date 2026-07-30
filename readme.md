@@ -254,7 +254,7 @@ AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker
 
 ```c
 // Get recent filings for a ticker (pass limit=0 and form=NULL for defaults)
-AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, int limit, const char *form);
+AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, const char *form, int limit);
 
 // Get filing history by form type and date range
 AxionResponse* axion_filings_history(AxionClient *client, const char *ticker, const char *form_type, const char *start_date, const char *end_date);

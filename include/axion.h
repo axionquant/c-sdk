@@ -234,7 +234,7 @@ AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker
 // =====================================================================
 // FILINGS API
 // =====================================================================
-AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, int limit, const char *form);
+AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, const char *form, int limit);
 AxionResponse* axion_filings_history(AxionClient *client, const char *ticker, const char *form_type,
                                      const char *start_date, const char *end_date);
 AxionResponse* axion_filings_list_forms(AxionClient *client);

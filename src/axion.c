@@ -1048,19 +1048,19 @@ AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker
 // =====================================================================
 // FILINGS API
 // =====================================================================
-AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, int limit, const char *form) {
+AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, const char *form, int limit) {
     const char *keys[2];
     const char *values[2];
     int count = 0;
     char limit_str[32];
+    if (form) {
+        keys[count] = "form";
+        values[count++] = form;
+    }
     if (limit > 0) {
         snprintf(limit_str, sizeof(limit_str), "%d", limit);
         keys[count] = "limit";
         values[count++] = limit_str;
-    }
-    if (form) {
-        keys[count] = "form";
-        values[count++] = form;
     }
     char *query = (count > 0) ? _build_query(keys, values, count) : NULL;
     char path[256];
