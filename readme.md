@@ -1,63 +1,79 @@
-# Axion C SDK
+# AxionQuant C SDK
 
-A C client library for the [Axion](https://axionquant.com) financial data API, providing access to market data, company profiles, economic indicators, news, sentiment, filings, financials, and more.
+The **AxionQuant C SDK** is a C client library for the [Axion Financial Data API](https://axionquant.com). It provides programmatic access to **stock market data, cryptocurrency, forex, futures, indices, company fundamentals, financial statements, SEC filings, economic data, ETF data, financial news, and market sentiment** from C applications.
+
+The SDK is designed for **quantitative research, financial analysis, financial modeling, and data-driven applications** that need direct access to financial market data through a C API.
+
+Use the AxionQuant C SDK to retrieve real-time and historical market data, analyze company fundamentals, access regulatory filings, work with economic indicators, and integrate financial datasets into C and C++ applications.
+
+* [Get a free Axion API key](https://axionquant.com/dashboard/api-keys)
+* [Axion Financial Data API Documentation](https://axionquant.com/docs)
+* [Axion C SDK Documentation](https://axionquant.com/developers/libraries)
+* [AxionQuant C SDK on GitHub](https://github.com/axionquant/c-sdk)
 
 ## Features
 
-- **Market Data** - Stocks, crypto, forex, futures, and indices (quotes, tickers, historical prices)
-- **Company Profiles** - Summaries, info, statistics, calendar, and recommendations
-- **Financials** - Income, balance sheet, cash flow, and key metrics
-- **Earnings** - History, trends, index trends, and full reports
-- **Filings** - SEC filings search and form retrieval
-- **Insiders** - Ownership, transactions, funds, institutions, and activity
-- **Economic Data** - FRED datasets, economic calendar search
-- **ESG & Credit** - ESG scores and credit ratings
-- **News & Sentiment** - Financial news and social/analyst sentiment analysis
-- **Supply Chain** - Customer, supplier, and peer relationships
-- **ETF Data** - Fund info, holdings, and exposure
-- **Web Traffic** - Company web traffic data
+The AxionQuant C SDK provides access to a broad range of financial datasets and market research tools.
+
+* **Stock Market Data** - Stock quotes, ticker information, historical prices, gainers, losers, and market listings
+* **Cryptocurrency Market Data** - Cryptocurrency quotes, historical prices, tickers, gainers, losers, categories, and ratings
+* **Forex Market Data** - Foreign exchange quotes, historical prices, currency pairs, exchanges, and market data
+* **Futures Market Data** - Futures contracts, quotes, historical prices, exchanges, currencies, and market data
+* **Index Data** - Index quotes, historical prices, constituents, exposure, and market performance
+* **Company Fundamentals** - Company profiles, financial statements, financial metrics, valuation ratios, and key business information
+* **Earnings Data** - Earnings history, trends, reports, earnings calendars, transcripts, and transcript sentiment
+* **SEC Filings** - SEC filing search, filing history, supported form types, document text, and filing sentiment
+* **Insider & Ownership Data** - Insider transactions, institutional ownership, fund ownership, major holders, and ownership activity
+* **Economic Data** - FRED economic datasets, economic indicators, and economic calendar data
+* **ETF Data** - ETF quotes, historical prices, holdings, fund information, exposure, weights, and performance
+* **Financial News & Sentiment** - Company news, financial news, social sentiment, news sentiment, and analyst sentiment
+* **ESG & Credit Data** - ESG information and credit ratings
+* **Supply Chain Data** - Company customers, suppliers, and business relationships
+* **Web Traffic Data** - Company web traffic and audience data
 
 ## Installation
 
 ### Prerequisites
 
-- C compiler (GCC, Clang, etc.)
-- [libcurl](https://curl.se/libcurl/)
-- [cJSON](https://github.com/DaveGamble/cJSON)
+* C compiler such as GCC or Clang
+* [libcurl](https://curl.se/libcurl/)
+* [cJSON](https://github.com/DaveGamble/cJSON)
+
+### Building the C SDK
+
+Install the required dependencies and compile the AxionQuant C client as a shared library:
 
 ```bash
 # Ubuntu/Debian
 sudo apt-get install libcurl4-openssl-dev libcjson-dev
 ```
 
-### Building
-
 ```bash
-# Compile as a shared library
+# Compile the Axion C SDK as a shared library
 gcc -c axion.c -o axion.o -lcurl -lcjson -fPIC
 gcc -shared -o libaxion.so axion.o -lcurl -lcjson
 
-# Compile your program against the library
+# Compile your C application against the Axion library
 gcc -o myapp myapp.c -L. -laxion -lcurl -lcjson
 ```
 
 ## Quick Start
 
-[Get your free API key](https://axionquant.com/dashboard/api-keys)
+Get a [free Axion API key](https://axionquant.com/dashboard/api-keys) and use the C SDK to retrieve financial market data:
 
 ```c
 #include "axion.h"
 #include <stdio.h>
 
 int main() {
-    // Initialize client
     AxionClient *client = axion_init("your_api_key_here");
+
     if (!client) {
         fprintf(stderr, "Failed to initialize client\n");
         return 1;
     }
 
-    // Get historical stock prices
+    // Get historical stock market data
     AxionResponse *response = axion_stocks_prices(
         client,
         "AAPL",
@@ -76,13 +92,18 @@ int main() {
 
     axion_response(response);
     axion_client(client);
+
     return 0;
 }
 ```
 
 ## API Reference
 
-### Client Management
+The AxionQuant C SDK provides a C interface to the Axion Financial Data API. Each endpoint returns an `AxionResponse` containing the HTTP status, raw response data, parsed JSON, and any error information.
+
+## Client Management
+
+Initialize and manage an Axion API client and its responses:
 
 ```c
 // Initialize a new client with your API key
@@ -95,7 +116,7 @@ void axion_client(AxionClient *client);
 void axion_response(AxionResponse *response);
 ```
 
-### Response Structure
+## Response Structure
 
 ```c
 struct AxionResponse {
@@ -108,9 +129,13 @@ struct AxionResponse {
 
 ---
 
-### Market Data
+## Market Data API
 
-#### Stocks
+Access **real-time and historical financial market data** for stocks, cryptocurrencies, forex, futures, and market indices.
+
+### Stock Market Data
+
+Retrieve stock tickers, quotes, historical prices, market gainers and losers, and stock market listings.
 
 ```c
 AxionResponse* axion_stocks_tickers(AxionClient *client, const char *country, const char *exchange);
@@ -127,7 +152,7 @@ AxionResponse* axion_stocks_list_industry(AxionClient *client);
 AxionResponse* axion_stocks_list_type(AxionClient *client);
 ```
 
-#### Cryptocurrency
+### Cryptocurrency Market Data
 
 ```c
 AxionResponse* axion_crypto_tickers(AxionClient *client, const char *type);
@@ -141,7 +166,7 @@ AxionResponse* axion_crypto_list_rating(AxionClient *client);
 AxionResponse* axion_crypto_list_type(AxionClient *client);
 ```
 
-#### Forex
+### Forex Market Data
 
 ```c
 AxionResponse* axion_forex_tickers(AxionClient *client, const char *country, const char *exchange);
@@ -155,7 +180,7 @@ AxionResponse* axion_forex_list_rating(AxionClient *client);
 AxionResponse* axion_forex_list_country(AxionClient *client);
 ```
 
-#### Futures
+### Futures Market Data
 
 ```c
 AxionResponse* axion_futures_tickers(AxionClient *client, const char *exchange);
@@ -170,7 +195,7 @@ AxionResponse* axion_futures_list_timezone(AxionClient *client);
 AxionResponse* axion_futures_list_country(AxionClient *client);
 ```
 
-#### Indices
+### Index Market Data
 
 ```c
 AxionResponse* axion_indices_tickers(AxionClient *client, const char *exchange);
@@ -190,7 +215,9 @@ AxionResponse* axion_indices_list_country(AxionClient *client);
 
 ---
 
-### Company Profiles
+## Company Fundamentals and Profiles
+
+Access company profiles, business information, statistics, market summaries, calendars, and analyst recommendations.
 
 ```c
 AxionResponse* axion_profiles_profile(AxionClient *client, const char *ticker);
@@ -201,9 +228,9 @@ AxionResponse* axion_profiles_calendar(AxionClient *client, const char *ticker);
 AxionResponse* axion_profiles_recommendation(AxionClient *client, const char *ticker);
 ```
 
----
+## Financial Statements and Financial Metrics
 
-### Financials
+Retrieve company income statements, balance sheets, cash flow statements, financial metrics, valuation ratios, and historical financial data for fundamental analysis.
 
 ```c
 // All financial functions accept a `periods` argument (pass 0 for default)
@@ -221,11 +248,13 @@ AxionResponse* axion_financials_shares_outstanding_basic(AxionClient *client, co
 AxionResponse* axion_financials_shares_outstanding_diluted(AxionClient *client, const char *ticker, int periods);
 AxionResponse* axion_financials_metrics(AxionClient *client, const char *ticker);
 AxionResponse* axion_financials_snapshot(AxionClient *client, const char *ticker);
-// Full financial statements (pass NULL for year/quarter to get latest)
+
+// Full financial statements
 AxionResponse* axion_financials_balance_sheet(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 AxionResponse* axion_financials_income_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 AxionResponse* axion_financials_cash_flow_statement(AxionClient *client, const char *ticker, const char *year, const char *quarter);
-// Historical valuation ratios (pass NULL for from/to/frame to use defaults)
+
+// Historical valuation ratios
 AxionResponse* axion_financials_eps(AxionClient *client, const char *ticker, const char *from, const char *to);
 AxionResponse* axion_financials_pe(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame);
 AxionResponse* axion_financials_market_cap(AxionClient *client, const char *ticker, const char *from, const char *to, const char *frame);
@@ -237,7 +266,9 @@ AxionResponse* axion_financials_debt_to_equity(AxionClient *client, const char *
 
 ---
 
-### Earnings
+## Earnings and Earnings Call Data
+
+Retrieve historical earnings, earnings trends, earnings reports, earnings call transcripts, and transcript sentiment.
 
 ```c
 AxionResponse* axion_earnings_history(AxionClient *client, const char *ticker);
@@ -248,12 +279,12 @@ AxionResponse* axion_earnings_transcript_sentiment(AxionClient *client, const ch
 AxionResponse* axion_earnings_transcript(AxionClient *client, const char *ticker, const char *year, const char *quarter);
 ```
 
----
+## SEC Filings and Regulatory Data
 
-### Filings
+Access SEC filings programmatically, search filing histories, retrieve supported filing forms, and retrieve filing document text and sentiment.
 
 ```c
-// Get recent filings for a ticker (pass limit=0 and form=NULL for defaults)
+// Get recent filings for a ticker
 AxionResponse* axion_filings_recent(AxionClient *client, const char *ticker, const char *form, int limit);
 
 // Get filing history by form type and date range
@@ -272,9 +303,9 @@ AxionResponse* axion_filings_document_text(AxionClient *client, const char *docu
 AxionResponse* axion_filings_document_sentiment(AxionClient *client, const char *document_id);
 ```
 
----
+## Insider Trading and Ownership Data
 
-### Insiders
+Retrieve insider transactions, individual holders, institutional ownership, fund ownership, and ownership activity.
 
 ```c
 AxionResponse* axion_insiders_funds(AxionClient *client, const char *ticker);
@@ -285,9 +316,9 @@ AxionResponse* axion_insiders_activity(AxionClient *client, const char *ticker);
 AxionResponse* axion_insiders_transactions(AxionClient *client, const char *ticker);
 ```
 
----
+## Economic and Macroeconomic Data
 
-### Economic Data
+Access FRED economic datasets, economic indicators, and economic calendar data for financial analysis and quantitative research.
 
 ```c
 // Search FRED economic datasets
@@ -299,21 +330,21 @@ AxionResponse* axion_econ_find(AxionClient *client, const char *query);
 // Get a dataset by series ID
 AxionResponse* axion_econ_dataset(AxionClient *client, const char *series_id);
 
-// Get the economic calendar (all parameters optional - pass NULL / -1 to skip)
+// Get the economic calendar
 AxionResponse* axion_econ_calendar(
     AxionClient *client,
     const char *from_date,
     const char *to_date,
     const char *country,
-    int min_importance,   // -1 to skip, 0-3 for importance level
+    int min_importance,
     const char *currency,
     const char *category
 );
 ```
 
----
+## Financial News API
 
-### News
+Retrieve general financial news, company-specific news, country-specific news, and category-based financial news.
 
 ```c
 AxionResponse* axion_news_general(AxionClient *client);
@@ -322,9 +353,9 @@ AxionResponse* axion_news_country(AxionClient *client, const char *country);
 AxionResponse* axion_news_category(AxionClient *client, const char *category);
 ```
 
----
+## Market Sentiment API
 
-### Sentiment
+Access social, news, analyst, and combined market sentiment data for companies and financial markets.
 
 ```c
 AxionResponse* axion_sentiment_all(AxionClient *client, const char *ticker);
@@ -333,9 +364,7 @@ AxionResponse* axion_sentiment_news(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_analyst(AxionClient *client, const char *ticker);
 ```
 
----
-
-### ESG & Credit
+## ESG and Credit Data
 
 ```c
 AxionResponse* axion_esg_data(AxionClient *client, const char *ticker);
@@ -343,9 +372,9 @@ AxionResponse* axion_credit_search(AxionClient *client, const char *query);
 AxionResponse* axion_credit_ratings(AxionClient *client, const char *entity_id);
 ```
 
----
+## Supply Chain Data
 
-### Supply Chain
+Retrieve company customers, suppliers, and peer relationships for fundamental and business analysis.
 
 ```c
 AxionResponse* axion_supply_chain_customers(AxionClient *client, const char *ticker);
@@ -353,9 +382,9 @@ AxionResponse* axion_supply_chain_suppliers(AxionClient *client, const char *tic
 AxionResponse* axion_supply_chain_peers(AxionClient *client, const char *ticker);
 ```
 
----
+## ETF Market Data
 
-### ETF Data
+Access ETF quotes, historical prices, fund information, holdings, portfolio exposure, weights, and market performance.
 
 ```c
 AxionResponse* axion_etfs_tickers(AxionClient *client, const char *country, const char *exchange);
@@ -377,15 +406,11 @@ AxionResponse* axion_etfs_list_industry(AxionClient *client);
 AxionResponse* axion_etfs_list_type(AxionClient *client);
 ```
 
----
-
-### Web Traffic
+## Web Traffic Data
 
 ```c
 AxionResponse* axion_webtraffic_traffic(AxionClient *client, const char *ticker);
 ```
-
----
 
 ## Error Handling
 
@@ -407,19 +432,30 @@ axion_response(response);
 
 ## Memory Management
 
-You must free every response and the client when finished:
+Every response returned by the SDK should be released with `axion_response()`, and the client should be released with `axion_client()` when it is no longer needed.
 
 ```c
 AxionResponse *r = axion_stocks_prices(client, "AAPL", NULL, NULL, NULL);
-// ... use r ...
-axion_response(r);      // free the response
 
-axion_client(client);   // free the client when done
+// ... use r ...
+
+axion_response(r);
+axion_client(client);
 ```
+
+## Documentation and Resources
+
+* [AxionQuant Financial Data API](https://axionquant.com)
+* [AxionQuant API Documentation](https://axionquant.com/docs)
+* [AxionQuant C SDK](https://axionquant.com/developers/libraries)
+* [Get a Free API Key](https://axionquant.com/dashboard/api-keys)
+* [AxionQuant GitHub](https://github.com/axionquant/c-sdk)
 
 ## Get Started
 
-For detailed API documentation, support, or to obtain an API key, visit the [Axion](https://axionquant.com) website.
+The AxionQuant C SDK provides a C interface to a broad range of financial market datasets for **quantitative research, financial analysis, and financial applications**.
+
+[Get a free Axion API key](https://axionquant.com/dashboard/api-keys) or [read the Axion Financial Data API documentation](https://axionquant.com/docs) to get started.
 
 ## License
 
