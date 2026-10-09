@@ -355,10 +355,9 @@ AxionResponse* axion_news_category(AxionClient *client, const char *category);
 
 ## Market Sentiment API
 
-Access social, news, analyst, and combined market sentiment data for companies and financial markets.
+Access social, news, and analyst market sentiment data for companies and financial markets.
 
 ```c
-AxionResponse* axion_sentiment_all(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_social(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_news(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_analyst(AxionClient *client, const char *ticker);

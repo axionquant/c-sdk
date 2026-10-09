@@ -206,7 +206,6 @@ AxionResponse* axion_news_category(AxionClient *client, const char *category);
 // =====================================================================
 // SENTIMENT API
 // =====================================================================
-AxionResponse* axion_sentiment_all(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_social(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_news(AxionClient *client, const char *ticker);
 AxionResponse* axion_sentiment_analyst(AxionClient *client, const char *ticker);

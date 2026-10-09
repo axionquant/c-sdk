@@ -932,12 +932,6 @@ AxionResponse* axion_news_category(AxionClient *client, const char *category) {
 // =====================================================================
 // SENTIMENT API
 // =====================================================================
-AxionResponse* axion_sentiment_all(AxionClient *client, const char *ticker) {
-    char path[256];
-    snprintf(path, sizeof(path), "sentiment/%s/all", ticker);
-    return _axion_request(client, path, NULL);
-}
-
 AxionResponse* axion_sentiment_social(AxionClient *client, const char *ticker) {
     char path[256];
     snprintf(path, sizeof(path), "sentiment/%s/social", ticker);
